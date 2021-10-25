@@ -1,10 +1,39 @@
 #!/usr/bin/env python3
+import apt
 import os
+#Fonction vérification presence service isc-dhcp-server
+def verification():
+    isc = 'isc-dhcp-server'
+    cache = apt.Cache()
+    isc_installe = False
+
+    if isc in cache:
+        isc_installe = cache[isc].is_installed
+    if isc_installe == True:
+        print("##############################")
+        print("#isc-dhcp-server est installé#")
+        print("############################## \n")
+    else:
+        print("####################################")
+        print("#isc-dhcp-server n'est pas installé#")
+        print("#################################### \n")
 
 #Fonction installation server dhcp
 def installation():
     install = "sudo apt-get -y -qq install isc-dhcp-server"
     os.system(install)
+
+#Fonction de désinstallation isc-dhcp-server
+def desinstallation():
+    remove = "sudo apt-get --purge -qq remove isc-dhcp-server"
+    os.system(remove)
+
+# Fonction creation d'un nouveau fichier dhcpd.conf et deplacement de l'ancien
+def deplacefile1():
+    deplace = "mv dhcpd.conf dhcpd.conf.origin"
+    nouveau = "touch /etc/dhcp/dhcpd.conf"
+    os.system(deplace)
+    os.system(nouveau)
 
 #Fonction configuration du fichier isc-dhcp-server
 def configfile1():
@@ -27,11 +56,15 @@ def configfile1():
     file.close()
 
 #Fonction configuration du fichier dhcpd.conf
+
+
 #Fonction redémarrage du server dhcp
 def restartservice():
     restart = "systemctl restart isc-dhcp-server"
     os.system(restart)
 
-#installation()
-#configfile1()
+#desinstallation()
+installation()
+verification()
+configfile1()
 #restartservice()
