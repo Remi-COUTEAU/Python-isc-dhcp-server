@@ -28,14 +28,7 @@ def desinstallation():
     remove = "sudo apt-get --purge -qq remove isc-dhcp-server"
     os.system(remove)
 
-# Fonction creation d'un nouveau fichier dhcpd.conf et deplacement de l'ancien
-def deplacefile1():
-    deplace = "mv dhcpd.conf dhcpd.conf.origin"
-    nouveau = "touch /etc/dhcp/dhcpd.conf"
-    os.system(deplace)
-    os.system(nouveau)
-
-#Fonction configuration du fichier isc-dhcp-server
+#Fonction configuration du fichier etc/default/isc-dhcp-server
 def configfile1():
     #Récuperation du nom de l'interface d'ecoute du server dhcp
     interface = input("Entrer le nom de l'interface Internet: \n")
@@ -55,16 +48,42 @@ def configfile1():
     file.writelines(list)
     file.close()
 
+# Fonction creation d'un nouveau fichier dhcpd.conf et deplacement de l'ancien
+def file2():
+    deplace = "mv /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf.origin"
+    nouveau = "touch /etc/dhcp/dhcpd.conf"
+    os.system(deplace)
+    os.system(nouveau)
+
 #Fonction configuration du fichier dhcpd.conf
-
-
+def configfile2():
+    #Récuperation des valeurs 
+    liste = ["subnet", "netmask", "rangedebut", "rangefin", "dns", "netmask", "router", "broadcast"]
+    valeur = []
+    i = 0
+    while i < 8:
+        val = input("Entrer l'adresse du: " + liste[i] + " : \n")
+        valeur.append(val)
+        i = i + 1
+    #Edition du fichier dhcpd.conf
+    fichier = open("/etc/dhcp/dhcpd.conf",'wt')
+    fichier.writelines(["#dhcpd.conf \n\n", "authoritative; \n", "ddns-update-style none; \n", "log-facility local7; \n\n"])
+    fichier.write("subnet " + valeur[0] + " netmask " + valeur[1] + " { \n")
+    fichier.write("  range " + valeur[2] + " " + valeur[3] + "; \n")
+    fichier.write("  option domain-name-servers " + valeur[4] + "; \n")
+    fichier.write("  option subnet-mask " + valeur[5] + "; \n")
+    fichier.write("  option routers " + valeur[6] + "; \n")
+    fichier.write("  option broadcast-address " + valeur[7] + "; \n")
+    fichier.writelines(["  default-lease-time 86400; \n", "  max-lease-time 86400; \n", "}"])
 #Fonction redémarrage du server dhcp
 def restartservice():
     restart = "systemctl restart isc-dhcp-server"
     os.system(restart)
 
 #desinstallation()
-installation()
-verification()
-configfile1()
+#installation()
+#verification()
+#configfile1()
+file2()
+configfile2()
 #restartservice()
