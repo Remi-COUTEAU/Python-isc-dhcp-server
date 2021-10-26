@@ -17,6 +17,7 @@ def verification():
         print("####################################")
         print("#isc-dhcp-server n'est pas installé#")
         print("#################################### \n")
+    return isc_installe
 
 #Fonction installation server dhcp
 def installation():
@@ -57,7 +58,7 @@ def file2():
 
 #Fonction configuration du fichier dhcpd.conf
 def configfile2():
-    #Récuperation des valeurs 
+    #Récuperation des valeurs
     liste = ["subnet", "netmask", "rangedebut", "rangefin", "dns", "netmask", "router", "broadcast"]
     valeur = []
     i = 0
@@ -78,12 +79,59 @@ def configfile2():
 #Fonction redémarrage du server dhcp
 def restartservice():
     restart = "systemctl restart isc-dhcp-server"
+    status = "systemctl status isc-dhcp-server"
     os.system(restart)
+    os.system(status)
 
-#desinstallation()
-#installation()
-#verification()
-#configfile1()
-file2()
-configfile2()
-#restartservice()
+#Fonction redemarrage du poste
+def reboot():
+    reboot = "sudo reboot"
+    os.system(reboot)
+
+#Déroulement du script
+def main():
+
+    relance = 1
+    while relance == 1:
+        verif = verification()
+        if verif == True:
+            x = 0
+            while x == 0:
+                desinstall = input("voulez-vous desinstaller isc-dhcp-server (y pour oui, n pour non, q pour quitter):\nATENTION la desinstallation entraine un redémarrage du poste\n")
+                if desinstall == 'y':
+                    desinstallation()
+                    reboot()
+                    x = 1
+                elif desinstall == 'n':
+                    print("votre réponse est non\n")
+                    x = 1
+                elif desinstall == 'q':
+                    x = 1
+                    relance = 2
+                else:
+                    print("votre réponse n'est pas appropiée\n")
+                    x = 0
+        else:
+            y = 0
+            while y == 0:
+                install = input("Voulez-vous installer isc-dhcp-server (y pour oui n pour non q pour quitter:)\n")
+                if install == 'y':
+                    installation()
+                    configfile1()
+                    file2()
+                    configfile2()
+                    restartservice()
+                    y = 1
+                    print("L'installation est terminée\n")
+                elif install == 'n':
+                    print ("Votre reponse est non \n")
+                    y = 1
+                elif install == 'q':
+                    y = 1
+                    relance = 2
+                else:
+                    print ("votre reponse n'est pas appropiée")
+                    y = 0
+    print ("fin du programme")
+
+main()
