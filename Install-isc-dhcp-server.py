@@ -32,6 +32,10 @@ def desinstallation():
 #Fonction configuration du fichier etc/default/isc-dhcp-server
 def configfile1():
     #Récuperation du nom de l'interface d'ecoute du server dhcp
+    inter = "ls /sys/class/net"
+    print("\n\nListe Interfaces\n##########")
+    os.system(inter)
+    print("##########\n")
     interface = input("Entrer le nom de l'interface Internet: \n")
 
     #Déclaration des variables
