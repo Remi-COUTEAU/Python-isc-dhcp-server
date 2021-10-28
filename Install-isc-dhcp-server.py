@@ -99,27 +99,25 @@ def main():
     while relance == 1:
         verif = verification()
         if verif == True:
-            x = 0
+            x = 0 #variable permettant de continuer ou d'arreter la boucle while
             while x == 0:
-                desinstall = input("voulez-vous desinstaller isc-dhcp-server (y pour oui, n pour non, q pour quitter):\nATENTION la desinstallation entraine un redémarrage du poste\n")
-                if desinstall == 'y':
+                desinstall = input("voulez-vous desinstaller isc-dhcp-server (o pour oui, n pour non et quitter):\nATENTION: LA DESINSTALLATION ENTRAINE UN REDEMARRAGE DU SERVEUR\n")
+                if desinstall == 'o':
                     desinstallation()
                     reboot()
                     x = 1
                 elif desinstall == 'n':
                     print("votre réponse est non\n")
                     x = 1
-                elif desinstall == 'q':
-                    x = 1
                     relance = 2
                 else:
                     print("votre réponse n'est pas appropiée\n")
                     x = 0
         else:
-            y = 0
+            y = 0 #variable permettant de continuer ou d'arreter la boucle while
             while y == 0:
-                install = input("Voulez-vous installer isc-dhcp-server (y pour oui n pour non q pour quitter:)\n")
-                if install == 'y':
+                install = input("Voulez-vous installer isc-dhcp-server (o pour oui n pour non et quitter:)\n")
+                if install == 'o':
                     installation()
                     configfile1()
                     file2()
@@ -130,12 +128,21 @@ def main():
                 elif install == 'n':
                     print ("Votre reponse est non \n")
                     y = 1
-                elif install == 'q':
-                    y = 1
                     relance = 2
                 else:
                     print ("votre reponse n'est pas appropiée")
                     y = 0
-    print ("fin du programme")
-
+        print ("fin du programme")
+        reponse = input("Voulez-vous quitter?: (o pour oui, n pour non)")
+        z = 0 #variavle permettant de continuer ou d'arreter la boucle while
+        while z == 0:
+            if reponse == 'o':
+                relance = 2
+                z = 1
+            elif reponse == 'n':
+                relance = 1
+                z = 1
+            else:
+                print("Votre reponse ne n'est pas appropriée\n")
+                z = 0
 main()
