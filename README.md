@@ -4,7 +4,7 @@ RÔLE:
 
 Installation isc-dhcp-server
 
-EXIGENCE:
+EXIGENCES:
 
 Valable uniquement pour serveur ubuntu 18.04
 posséder une interface reseau d'écoute
